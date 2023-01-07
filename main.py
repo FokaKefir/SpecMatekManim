@@ -6,7 +6,6 @@ from manim import *
 
 class SystemOfDiffEquation(Scene):
     def construct(self):
-        """
         title = Tex("Állandó együtthatójú lineáris differenciálegyenlet-rendszer")
 
         self.play(Create(title), run_time=2)
@@ -166,7 +165,7 @@ class SystemOfDiffEquation(Scene):
         self.wait(2)
 
         sub_title7 = Tex(
-            "Ennek a segítségével felírhatjuk a következő két egyenlőséget\\\\ a sajátvektor kiszámításához"
+            "Ennek a segítségével felírhatjuk a következő két egyenlőséget\\\\ a sajátvektorok kiszámításához"
         ).scale(0.90).to_edge(UP)
 
         self.play(ReplacementTransform(sub_title6, sub_title7))
@@ -234,7 +233,8 @@ class SystemOfDiffEquation(Scene):
         self.wait(3)
 
         self.play(Uncreate(VGroup(sol_text1, sol_text2)), FadeOut(sub_title8))
-        """
+
+        # Example part
 
         ex_title1 = Tex(
             "Oldjuk meg a feladatot a következő példára:"
@@ -282,7 +282,7 @@ class SystemOfDiffEquation(Scene):
             ReplacementTransform(
                 VGroup(ex_mtext1, ex_mtext2),
                 ex_matrix_eq1
-            )
+            ), run_time=2
         )
         self.wait()
         self.play(ex_matrix_eq1.animate.shift(UP*2))
@@ -293,7 +293,7 @@ class SystemOfDiffEquation(Scene):
         )
 
         self.play(Create(ex_eigenvalues))
-        self.wait()
+        self.wait(2)
 
         ex_det = Matrix(
             [["2 - \\lambda", "2  "], ["1  ", "3 - \\lambda"]],
@@ -367,7 +367,7 @@ class SystemOfDiffEquation(Scene):
 
         ex_eigenvector_eq1 = VGroup(ex_matA1, ex_vecX1, ex_txt_equal1, ex_vec_zero1).scale(0.75).shift(LEFT * 1.5 + DOWN)
 
-        self.play(Create(ex_eigenvector_eq1))
+        self.play(Create(ex_eigenvector_eq1), run_time=3)
         self.wait()
         self.play(ex_eigenvector_eq1.animate.shift(LEFT * 2))
 
@@ -383,8 +383,8 @@ class SystemOfDiffEquation(Scene):
         ).scale(0.75).next_to(ex_ev_sys11, DOWN)
         ex_ev_sys1 = VGroup(ex_ev_sys11, ex_ev_sys12).next_to(ex_ar1, RIGHT)
 
-        self.play(Create(VGroup(ex_ar1, ex_ev_sys1)))
-        self.wait()
+        self.play(Create(VGroup(ex_ar1, ex_ev_sys1)), run_time=2)
+        self.wait(2)
 
         ex_ev_txt1 = MathTex(
             "x_1 = -2 x_2"
@@ -452,7 +452,7 @@ class SystemOfDiffEquation(Scene):
         ex_eigenvector_eq2 = VGroup(ex_matA2, ex_vecX2, ex_txt_equal2, ex_vec_zero2).scale(0.75).shift(
             LEFT * 1.5 + DOWN)
 
-        self.play(Create(ex_eigenvector_eq2))
+        self.play(Create(ex_eigenvector_eq2), run_time=3)
         self.wait()
         self.play(ex_eigenvector_eq2.animate.shift(LEFT * 2))
 
@@ -468,8 +468,8 @@ class SystemOfDiffEquation(Scene):
         ).scale(0.75).next_to(ex_ev_sys21, DOWN)
         ex_ev_sys2 = VGroup(ex_ev_sys21, ex_ev_sys22).next_to(ex_ar2, RIGHT)
 
-        self.play(Create(VGroup(ex_ar2, ex_ev_sys2)))
-        self.wait()
+        self.play(Create(VGroup(ex_ar2, ex_ev_sys2)), run_time=2)
+        self.wait(2)
 
         ex_ev_txt2 = MathTex(
             "x_3 = x_4"
@@ -512,5 +512,57 @@ class SystemOfDiffEquation(Scene):
         )
         self.wait(2)
 
+        ex_sol_text_template = MathTex(
+            "X = c_{1} e^{\\lambda_{1} t} X_{1} + c_{2} e^{\\lambda_{2} t} X_{2}"
+        )
+
+        self.play(Create(ex_sol_text_template), run_time=2)
+        self.wait(2)
+
+        ex_sol_vecX = Matrix(
+            [["x"], ["y"]],
+            left_bracket="(",
+            right_bracket=")"
+        ).scale(0.8)
+
+        ex_sol_text1 = MathTex(
+            "= c_{1} e^{t}"
+        ).next_to(ex_sol_vecX, RIGHT)
+
+        ex_sol_vecX1 = IntegerMatrix(
+            [[-2], [1]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_sol_text1, RIGHT).scale(0.8)
+
+        ex_sol_text2 = MathTex(
+            "c_{2} e^{4t}"
+        ).next_to(ex_sol_vecX1, RIGHT)
+
+        ex_sol_vecX2 = IntegerMatrix(
+            [[1], [1]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_sol_text2, RIGHT).scale(0.8)
+
+        ex_sol1 = VGroup(ex_sol_vecX, ex_sol_text1, ex_sol_vecX1, ex_sol_text2, ex_sol_vecX2).shift(LEFT * 2.6)
+
+        self.play(ReplacementTransform(ex_sol_text_template, ex_sol1), run_time=2)
+        self.wait(3)
+
+        ex_sol_x = MathTex(
+            "x = -2 c_1 e^{t} + c_2 e^{4t}"
+        ).scale(0.75)
+        ex_sol_y = MathTex(
+            "y = c_1 e^{t} + c_2 e^{4t}"
+        ).scale(0.75).next_to(ex_sol_x, DOWN)
+
+        self.play(
+            ReplacementTransform(
+                ex_sol1,
+                VGroup(ex_sol_x, ex_sol_y)
+            ), run_time=2
+        )
+        self.wait(2)
 
 
