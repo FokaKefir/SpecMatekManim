@@ -6,6 +6,7 @@ from manim import *
 
 class SystemOfDiffEquation(Scene):
     def construct(self):
+        """
         title = Tex("Állandó együtthatójú lineáris differenciálegyenlet-rendszer")
 
         self.play(Create(title), run_time=2)
@@ -233,4 +234,283 @@ class SystemOfDiffEquation(Scene):
         self.wait(3)
 
         self.play(Uncreate(VGroup(sol_text1, sol_text2)), FadeOut(sub_title8))
+        """
+
+        ex_title1 = Tex(
+            "Oldjuk meg a feladatot a következő példára:"
+        ).scale(0.90).to_edge(UP)
+
+        self.play(Write(ex_title1))
+        self.wait()
+
+        ex_mtext1 = MathTex(
+            "x' = 2x + 2y"
+        ).scale(0.75)
+        ex_mtext2 = MathTex(
+            "y' = x + 3y"
+        ).scale(0.75).next_to(ex_mtext1, DOWN)
+
+        self.play(Write(VGroup(ex_mtext1, ex_mtext2)), run_time=2)
+        self.wait(2)
+
+        ex_vecXDer = Matrix(
+            [["x'"], ["y'"]],
+            left_bracket="(",
+            right_bracket=")"
+        )#.set_color(RED)
+        ex_matA = IntegerMatrix(
+            [[2, 2], [1, 3]],
+            left_bracket="(",
+            right_bracket=")"
+        )#.set_color(YELLOW)
+        ex_vecX = Matrix(
+            [["x"], ["y"]],
+            left_bracket="(",
+            right_bracket=")"
+        )#.set_color(GREEN)
+        ex_txt_equal = MathTex("=")
+        ex_txt_times = MathTex("\\times")
+
+        ex_txt_equal.next_to(ex_matA, LEFT)
+        ex_vecXDer.next_to(ex_txt_equal, LEFT)
+        ex_txt_times.next_to(ex_matA, RIGHT)
+        ex_vecX.next_to(ex_txt_times, RIGHT)
+
+        ex_matrix_eq1 = VGroup(ex_vecXDer, ex_txt_equal, ex_matA, ex_txt_times, ex_vecX).scale(0.75)
+
+        self.play(
+            ReplacementTransform(
+                VGroup(ex_mtext1, ex_mtext2),
+                ex_matrix_eq1
+            )
+        )
+        self.wait()
+        self.play(ex_matrix_eq1.animate.shift(UP*2))
+        self.wait(2)
+
+        ex_eigenvalues = MathTex(
+            "det(A - \\lambda I_{2}) = 0"
+        )
+
+        self.play(Create(ex_eigenvalues))
+        self.wait()
+
+        ex_det = Matrix(
+            [["2 - \\lambda", "2  "], ["1  ", "3 - \\lambda"]],
+            left_bracket="|",
+            right_bracket="|"
+        ).shift(LEFT * 0.4)
+        ex_txt_equal_zero = MathTex("=0").next_to(ex_det, RIGHT)
+
+        self.play(ReplacementTransform(ex_eigenvalues, VGroup(ex_det, ex_txt_equal_zero)))
+        self.wait(3)
+
+        ex_det_calc1 = MathTex(
+            "(2 - \\lambda)(3 - \\lambda) - 2"
+        ).next_to(ex_txt_equal_zero, LEFT)
+
+        self.play(ReplacementTransform(ex_det, ex_det_calc1))
+        self.wait(3)
+
+        ex_det_calc2 = MathTex(
+            "\\lambda^2 -5 \\lambda + 4"
+        ).next_to(ex_txt_equal_zero, LEFT)
+
+        self.play(ReplacementTransform(ex_det_calc1, ex_det_calc2))
+        self.wait(3)
+
+        ex_det_calc3 = MathTex(
+            "(\\lambda - 1) (\\lambda -4)"
+        ).next_to(ex_txt_equal_zero, LEFT)
+
+        self.play(ReplacementTransform(ex_det_calc2, ex_det_calc3))
+        self.wait(3)
+
+        ex_text_lambda1 = MathTex(
+            "\\lambda_{1}=1"
+        ).scale(0.90).next_to(ex_det_calc3, DL).shift(DL)
+        ex_text_lambda2 = MathTex(
+            "\\lambda_{2}=4"
+        ).scale(0.90).next_to(ex_det_calc3, DR).shift(DR)
+
+        ex_arrow1 = Line(
+            start=ex_det_calc3.get_bottom(), end=ex_text_lambda1.get_top(), buff=0.2
+        ).add_tip().scale(0.75)
+        ex_arrow2 = Line(
+            start=ex_det_calc3.get_bottom(), end=ex_text_lambda2.get_top(), buff=0.2
+        ).add_tip().scale(0.75)
+
+        self.play(Create(VGroup(ex_text_lambda1, ex_arrow1, ex_text_lambda2, ex_arrow2)), run_time=2)
+        self.wait(2)
+        self.play(
+            Uncreate(VGroup(ex_arrow1, ex_arrow2, ex_text_lambda2, ex_det_calc3, ex_txt_equal_zero))
+        )
+        self.play(ex_text_lambda1.animate.shift(UP * 2.3))
+        self.wait()
+
+        ex_matA1 = IntegerMatrix(
+            [[1, 2], [1, 2]],
+            left_bracket="(",
+            right_bracket=")"
+        )
+        ex_vecX1 = Matrix(
+            [["x_1"], ["x_2"]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_matA1, RIGHT)
+        ex_txt_equal1 = MathTex("=").next_to(ex_vecX1, RIGHT)
+        ex_vec_zero1 = IntegerMatrix(
+            [[0], [0]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_txt_equal1, RIGHT)
+
+        ex_eigenvector_eq1 = VGroup(ex_matA1, ex_vecX1, ex_txt_equal1, ex_vec_zero1).scale(0.75).shift(LEFT * 1.5 + DOWN)
+
+        self.play(Create(ex_eigenvector_eq1))
+        self.wait()
+        self.play(ex_eigenvector_eq1.animate.shift(LEFT * 2))
+
+        ex_ar1 = Arrow(
+            LEFT, RIGHT
+        ).next_to(ex_eigenvector_eq1, RIGHT)
+
+        ex_ev_sys11 = MathTex(
+            "x_1 + 2 x_2 = 0"
+        ).scale(0.75)
+        ex_ev_sys12 = MathTex(
+            "x_1 + 2 x_2 = 0"
+        ).scale(0.75).next_to(ex_ev_sys11, DOWN)
+        ex_ev_sys1 = VGroup(ex_ev_sys11, ex_ev_sys12).next_to(ex_ar1, RIGHT)
+
+        self.play(Create(VGroup(ex_ar1, ex_ev_sys1)))
+        self.wait()
+
+        ex_ev_txt1 = MathTex(
+            "x_1 = -2 x_2"
+        ).scale(0.75).next_to(ex_ar1, RIGHT)
+
+        self.play(ReplacementTransform(ex_ev_sys1, ex_ev_txt1))
+        self.wait()
+
+        ex_ev_res1 = MathTex("X_1 = ").scale(0.75).next_to(ex_matA1, DOWN * 2.5)
+
+        ex_vecX1_res1 = Matrix(
+            [["x_1"], ["x_2"]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_ev_res1, RIGHT).scale(0.75)
+
+        self.play(Create(VGroup(ex_ev_res1, ex_vecX1_res1)))
+        self.wait()
+
+        ex_vecX1_res2 = Matrix(
+            [["-2 x_2"], ["x_2"]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_ev_res1, RIGHT).scale(0.75)
+
+        self.play(ReplacementTransform(ex_vecX1_res1, ex_vecX1_res2))
+        self.wait()
+
+        ex_vecX1_res3 = IntegerMatrix(
+            [[-2], [1]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_ev_res1, RIGHT).scale(0.75)
+
+        self.play(ReplacementTransform(ex_vecX1_res2, ex_vecX1_res3))
+        self.wait(2)
+
+        ex_text_lambda2 = MathTex(
+            "\\lambda_{2}=4"
+        ).scale(0.90).next_to(ex_text_lambda1, ORIGIN)
+
+        self.play(
+            Uncreate(VGroup(ex_eigenvector_eq1, ex_ar1, ex_ev_txt1, ex_ev_res1, ex_vecX1_res3))
+        )
+        self.play(ReplacementTransform(ex_text_lambda1, ex_text_lambda2))
+        self.wait(2)
+
+        ex_matA2 = IntegerMatrix(
+            [[-2, 2], [1, -1]],
+            left_bracket="(",
+            right_bracket=")"
+        )
+        ex_vecX2 = Matrix(
+            [["x_3"], ["x_4"]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_matA2, RIGHT)
+        ex_txt_equal2 = MathTex("=").next_to(ex_vecX2, RIGHT)
+        ex_vec_zero2 = IntegerMatrix(
+            [[0], [0]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_txt_equal2, RIGHT)
+
+        ex_eigenvector_eq2 = VGroup(ex_matA2, ex_vecX2, ex_txt_equal2, ex_vec_zero2).scale(0.75).shift(
+            LEFT * 1.5 + DOWN)
+
+        self.play(Create(ex_eigenvector_eq2))
+        self.wait()
+        self.play(ex_eigenvector_eq2.animate.shift(LEFT * 2))
+
+        ex_ar2 = Arrow(
+            LEFT, RIGHT
+        ).next_to(ex_eigenvector_eq2, RIGHT)
+
+        ex_ev_sys21 = MathTex(
+            "-2 x_3 + 2 x_4 = 0"
+        ).scale(0.75)
+        ex_ev_sys22 = MathTex(
+            "x_3 - x_4 = 0"
+        ).scale(0.75).next_to(ex_ev_sys21, DOWN)
+        ex_ev_sys2 = VGroup(ex_ev_sys21, ex_ev_sys22).next_to(ex_ar2, RIGHT)
+
+        self.play(Create(VGroup(ex_ar2, ex_ev_sys2)))
+        self.wait()
+
+        ex_ev_txt2 = MathTex(
+            "x_3 = x_4"
+        ).scale(0.75).next_to(ex_ar2, RIGHT)
+
+        self.play(ReplacementTransform(ex_ev_sys2, ex_ev_txt2))
+        self.wait()
+
+        ex_ev_res2 = MathTex("X_2 = ").scale(0.75).next_to(ex_matA2, DOWN * 2.5)
+
+        ex_vecX2_res1 = Matrix(
+            [["x_3"], ["x_4"]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_ev_res2, RIGHT).scale(0.75)
+
+        self.play(Create(VGroup(ex_ev_res2, ex_vecX2_res1)))
+        self.wait()
+
+        ex_vecX2_res2 = Matrix(
+            [["x_4"], ["x_4"]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_ev_res2, RIGHT).scale(0.75)
+
+        self.play(ReplacementTransform(ex_vecX2_res1, ex_vecX2_res2))
+        self.wait()
+
+        ex_vecX2_res3 = IntegerMatrix(
+            [[1], [1]],
+            left_bracket="(",
+            right_bracket=")"
+        ).next_to(ex_ev_res2, RIGHT).scale(0.75)
+
+        self.play(ReplacementTransform(ex_vecX2_res2, ex_vecX2_res3))
+        self.wait(2)
+
+        self.play(
+            Uncreate(VGroup(ex_eigenvector_eq2, ex_ar2, ex_ev_txt2, ex_ev_res2, ex_vecX2_res3, ex_text_lambda2))
+        )
+        self.wait(2)
+
+
 
